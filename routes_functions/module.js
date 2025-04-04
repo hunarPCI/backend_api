@@ -17,7 +17,7 @@ const createmodule = async (req, res) => {
       .input('name', sql.NVarChar, name)
       .input('status', sql.NVarChar, status)
       .input('instructions', sql.NVarChar, JSON.stringify(instructions))
-      .input('no_of_questions', sql.Int, no_of_questions)
+      .input('no_of_questions', sql.NVarChar, JSON.stringify(no_of_questions))
       .query(`
         INSERT INTO hunar_database.modules (name, status, instruction, no_of_questions) 
         OUTPUT INSERTED.id
@@ -31,7 +31,7 @@ const createmodule = async (req, res) => {
       .input('moduleId', sql.Int, moduleId)
       .query(`
         INSERT INTO hunar_database.test_skill_status (user_id, test_id, is_completed)
-        SELECT user_id, @moduleId, 0 FROM hunar_database.users
+        SELECT phone, @moduleId, 0 FROM hunar_database.users
       `);
 
     // Generate table names dynamically
@@ -148,7 +148,7 @@ const updatemodule = async (req, res) => {
       .input('id', sql.Int, id)
       .input('status', sql.NVarChar, status)
       .input('instruction', sql.NVarChar, JSON.stringify(instruction))
-      .input('no_of_questions', sql.Int, no_of_questions)
+      .input('no_of_questions', sql.NVarChar, JSON.stringify(no_of_questions))
       .query(`
         UPDATE hunar_database.modules 
         SET status = @status, instruction = @instruction, no_of_questions = @no_of_questions 
